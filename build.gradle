@@ -27,6 +27,8 @@ buildscript {
         version_lifecycle_extensions = "2.0.0"
         version_navigation = '1.0.0'
         version_room = "2.1.0"
+        version_shence_plugin = "3.1.1"
+        version_shence = "3.2.2"
     }
 
     repositories {
@@ -38,6 +40,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:$version_gradle"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
+        classpath "com.sensorsdata.analytics.android:android-gradle-plugin2:$version_shence_plugin"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
