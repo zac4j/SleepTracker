@@ -25,9 +25,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.zac4j.sleeptracker.database.SleepDatabase
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.zac4j.sleeptracker.R
+import com.zac4j.sleeptracker.database.SleepDatabase
 import com.zac4j.sleeptracker.databinding.FragmentSleepTrackerBinding
 
 /**
@@ -69,12 +70,25 @@ class SleepTrackerFragment : Fragment() {
 
     binding.sleepTrackerViewModel = viewModel
 
-    val adapter = SleepNightAdapter()
+    val layoutManager = GridLayoutManager(activity, 3)
+    layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+      override fun getSpanSize(position: Int) = when (position) {
+        0 -> 3
+        else -> 1
+      }
+    }
+    binding.sleepList.layoutManager = layoutManager
+
+    // Set up adapter
+    val adapter = SleepNightAdapter(SleepNightListener { nightId ->
+      viewModel.onSleepNightClicked(nightId)
+    })
     binding.sleepList.adapter = adapter
 
+    // Observe data set change and update list view
     viewModel.nights.observe(this, Observer {
       it?.let {
-        adapter.data = it
+        adapter.addHeaderAndSubmitList(it)
       }
     })
 
@@ -87,6 +101,18 @@ class SleepTrackerFragment : Fragment() {
                 )
             )
         viewModel.doneNavigating()
+      }
+    })
+
+    viewModel.navigateToSleepDataQuality.observe(this, Observer { night ->
+      night?.let {
+        this.findNavController()
+            .navigate(
+                SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(
+                    night
+                )
+            )
+        viewModel.onSleepDataQualityNavigated()
       }
     })
 
