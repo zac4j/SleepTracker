@@ -22,6 +22,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.viewModelScope
 import com.zac4j.sleeptracker.database.SleepDatabaseDao
 import com.zac4j.sleeptracker.database.SleepNight
 import com.zac4j.sleeptracker.formatNights
@@ -38,10 +39,6 @@ class SleepTrackerViewModel(
   val database: SleepDatabaseDao,
   application: Application
 ) : AndroidViewModel(application) {
-
-  private var viewModelJob = Job()
-
-  private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
   private var tonight = MutableLiveData<SleepNight?>()
 
@@ -80,7 +77,7 @@ class SleepTrackerViewModel(
   }
 
   private fun initializeTonight() {
-    uiScope.launch {
+    viewModelScope.launch {
       tonight.value = getTonightFromDatabase()
     }
   }
@@ -98,7 +95,7 @@ class SleepTrackerViewModel(
   }
 
   fun onStartTracking() {
-    uiScope.launch {
+    viewModelScope.launch {
       var sleepNight = SleepNight()
 
       insert(sleepNight)
@@ -109,7 +106,7 @@ class SleepTrackerViewModel(
   }
 
   fun onStopTracking() {
-    uiScope.launch {
+    viewModelScope.launch {
       val oldNight = tonight.value ?: return@launch
 
       oldNight.endTimeMilli = System.currentTimeMillis()
@@ -121,18 +118,12 @@ class SleepTrackerViewModel(
   }
 
   fun onClear() {
-    uiScope.launch {
+    viewModelScope.launch {
       clear()
       tonight.value = null
 
       _showSnackbarEvent.value = true
     }
-  }
-
-  override fun onCleared() {
-    super.onCleared()
-
-    viewModelJob.cancel()
   }
 
   private suspend fun insert(night: SleepNight) {

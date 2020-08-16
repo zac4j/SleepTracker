@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -59,11 +60,8 @@ class SleepTrackerFragment : Fragment() {
     val dataSource = SleepDatabase.getInstance(application)
         .sleepDatabaseDao
 
-    val viewModelFactory =
-      SleepTrackerViewModelFactory(dataSource, application)
-
-    val viewModel = ViewModelProviders.of(this, viewModelFactory)
-        .get(SleepTrackerViewModel::class.java)
+    val viewModelFactory = SleepTrackerViewModelFactory(dataSource, application)
+    val viewModel = viewModelFactory.create(SleepTrackerViewModel::class.java)
 
     // Set the current activity as the lifecycle owner of the binding.
     binding.lifecycleOwner = this
@@ -86,13 +84,13 @@ class SleepTrackerFragment : Fragment() {
     binding.sleepList.adapter = adapter
 
     // Observe data set change and update list view
-    viewModel.nights.observe(this, Observer {
+    viewModel.nights.observe(viewLifecycleOwner, Observer {
       it?.let {
         adapter.addHeaderAndSubmitList(it)
       }
     })
 
-    viewModel.navigateToSleepQuality.observe(this, Observer { night ->
+    viewModel.navigateToSleepQuality.observe(viewLifecycleOwner, Observer { night ->
       night?.let {
         this.findNavController()
             .navigate(
@@ -104,7 +102,7 @@ class SleepTrackerFragment : Fragment() {
       }
     })
 
-    viewModel.navigateToSleepDataQuality.observe(this, Observer { night ->
+    viewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner, Observer { night ->
       night?.let {
         this.findNavController()
             .navigate(
@@ -116,7 +114,7 @@ class SleepTrackerFragment : Fragment() {
       }
     })
 
-    viewModel.showSnackbarEvent.observe(this, Observer {
+    viewModel.showSnackbarEvent.observe(viewLifecycleOwner, Observer {
       if (it == true) {
         Snackbar.make(
             activity!!.findViewById(android.R.id.content), getString(R.string.cleared_message),
