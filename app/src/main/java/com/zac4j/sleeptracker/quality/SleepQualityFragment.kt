@@ -23,10 +23,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.zac4j.sleeptracker.database.SleepDatabase
 import com.zac4j.sleeptracker.R
+import com.zac4j.sleeptracker.database.SleepDatabase
 import com.zac4j.sleeptracker.databinding.FragmentSleepQualityBinding
 
 /**
@@ -67,12 +66,11 @@ class SleepQualityFragment : Fragment() {
         arguments.sleepNightKey, dataSource
     )
 
-    val viewModel = ViewModelProviders.of(this, viewModelFactory)
-        .get(SleepQualityViewModel::class.java)
+    val viewModel = viewModelFactory.create(SleepQualityViewModel::class.java)
 
     binding.sleepQualityViewModel = viewModel
 
-    viewModel.navigateToSleepTracker.observe(this, Observer {
+    viewModel.navigateToSleepTracker.observe(viewLifecycleOwner, Observer {
       if (it == true) {
         this.findNavController()
             .navigate(

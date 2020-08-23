@@ -20,11 +20,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -51,8 +48,8 @@ class SleepTrackerFragment : Fragment() {
   ): View? {
 
     // Get a reference to the binding object and inflate the fragment views.
-    val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
-        inflater, R.layout.fragment_sleep_tracker, container, false
+    val binding: FragmentSleepTrackerBinding = FragmentSleepTrackerBinding.inflate(
+        inflater, container, false
     )
 
     val application = requireNotNull(this.activity).application
@@ -102,12 +99,12 @@ class SleepTrackerFragment : Fragment() {
       }
     })
 
-    viewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner, Observer { night ->
-      night?.let {
+    viewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner, Observer { nightId ->
+      nightId?.let {
         this.findNavController()
             .navigate(
                 SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(
-                    night
+                    nightId
                 )
             )
         viewModel.onSleepDataQualityNavigated()

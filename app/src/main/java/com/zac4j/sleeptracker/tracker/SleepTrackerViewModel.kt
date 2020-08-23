@@ -26,9 +26,7 @@ import androidx.lifecycle.viewModelScope
 import com.zac4j.sleeptracker.database.SleepDatabaseDao
 import com.zac4j.sleeptracker.database.SleepNight
 import com.zac4j.sleeptracker.formatNights
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
