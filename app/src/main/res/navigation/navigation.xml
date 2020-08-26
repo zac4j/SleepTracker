@@ -26,7 +26,7 @@
   <fragment
     android:id="@+id/sleep_tracker_fragment"
     android:name="com.zac4j.sleeptracker.tracker.SleepTrackerFragment"
-    android:label="@string/sleep_tracker_fragment"
+    android:label="@string/sleep_tracker"
     tools:layout="@layout/fragment_sleep_tracker">
     <action
       android:id="@+id/action_sleepTrackerFragment_to_sleepQualityFragment"
@@ -43,7 +43,7 @@
   <fragment
     android:id="@+id/sleep_quality_fragment"
     android:name="com.zac4j.sleeptracker.quality.SleepQualityFragment"
-    android:label="@string/sleep_quality_fragment"
+    android:label="@string/sleep_quality"
     tools:layout="@layout/fragment_sleep_quality">
     <argument
       android:name="sleepNightKey"
@@ -58,7 +58,7 @@
   <fragment
     android:id="@+id/sleep_detail_fragment"
     android:name="com.zac4j.sleeptracker.detail.SleepDetailFragment"
-    android:label="fragment_sleep_detail"
+    android:label="@string/sleep_detail"
     tools:layout="@layout/fragment_sleep_detail">
     <argument
       android:name="sleepNightKey"

@@ -16,8 +16,12 @@
 
 package com.zac4j.sleeptracker.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -39,6 +43,8 @@ import com.zac4j.sleeptracker.databinding.FragmentSleepDetailBinding
  */
 class SleepDetailFragment : Fragment() {
 
+  private lateinit var mBinding: FragmentSleepDetailBinding
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -46,8 +52,8 @@ class SleepDetailFragment : Fragment() {
   ): View? {
 
     // Get a reference to the binding object and inflate the fragment views.
-    val binding: FragmentSleepDetailBinding = DataBindingUtil.inflate(
-        inflater, R.layout.fragment_sleep_detail, container, false
+    mBinding = FragmentSleepDetailBinding.inflate(
+        inflater, container, false
     )
 
     val application = requireNotNull(this.activity).application
@@ -63,9 +69,9 @@ class SleepDetailFragment : Fragment() {
 
     // To use the View Model with data binding, you have to explicitly
     // give the binding object a reference to it.
-    binding.sleepDetailViewModel = sleepDetailViewModel
+    mBinding.sleepDetailViewModel = sleepDetailViewModel
 
-    binding.lifecycleOwner = this
+    mBinding.lifecycleOwner = this
 
     // Add an Observer to the state variable for Navigating when a Quality icon is tapped.
     sleepDetailViewModel.navigateToSleepTracker.observe(viewLifecycleOwner, Observer {
@@ -80,6 +86,35 @@ class SleepDetailFragment : Fragment() {
       }
     })
 
-    return binding.root
+    setHasOptionsMenu(true)
+
+    return mBinding.root
   }
+
+  override fun onCreateOptionsMenu(
+    menu: Menu,
+    inflater: MenuInflater
+  ) {
+    super.onCreateOptionsMenu(menu, inflater)
+    inflater.inflate(R.menu.options_menu, menu)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+      R.id.share -> {
+        val shareContent =
+          getString(R.string.share_content, mBinding.sleepLength.text, mBinding.qualityString.text)
+        val i = createShareIntent(shareContent)
+        startActivity(i)
+      }
+    }
+
+    return super.onOptionsItemSelected(item)
+  }
+
+  private fun createShareIntent(sleepQuality: String) = Intent(Intent.ACTION_SEND).apply {
+    type = "text/plain"
+    putExtra(Intent.EXTRA_TEXT, sleepQuality)
+  }
+
 }
