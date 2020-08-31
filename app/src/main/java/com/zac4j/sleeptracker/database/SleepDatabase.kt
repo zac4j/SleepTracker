@@ -28,9 +28,19 @@ abstract class SleepDatabase : RoomDatabase() {
 
   companion object {
 
+    /**
+     * The value of a volatile variable will never be cached, and all writes and reads will be
+     * done to and from the main memory. This helps make sure the value of INSTANCE is always
+     * up-to-date and the same to all execution threads.
+     */
     @Volatile
     private var INSTANCE: SleepDatabase? = null
 
+    /**
+     * Wrapping the code to get the database into synchronized means that only one thread of
+     * execution at a time can enter this block of code, which makes sure the database only
+     * gets initialized once.
+     */
     fun getInstance(context: Context): SleepDatabase {
       synchronized(this) {
         var instance = INSTANCE
