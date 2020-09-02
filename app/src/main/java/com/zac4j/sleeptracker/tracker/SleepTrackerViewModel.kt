@@ -94,7 +94,7 @@ class SleepTrackerViewModel(
 
   fun onStartTracking() {
     viewModelScope.launch {
-      var sleepNight = SleepNight()
+      val sleepNight = SleepNight()
 
       insert(sleepNight)
 
@@ -125,21 +125,15 @@ class SleepTrackerViewModel(
   }
 
   private suspend fun insert(night: SleepNight) {
-    withContext(Dispatchers.IO) {
-      database.insert(night)
-    }
+    database.insert(night)
   }
 
   private suspend fun update(night: SleepNight) {
-    withContext(Dispatchers.IO) {
-      database.update(night)
-    }
+    database.update(night)
   }
 
   private suspend fun clear() {
-    withContext(Dispatchers.IO) {
-      database.clear()
-    }
+    database.clear()
   }
 
   fun doneNavigating() {
