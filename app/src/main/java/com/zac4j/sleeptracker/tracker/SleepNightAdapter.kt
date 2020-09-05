@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * Desc:
+ * Adapter for sleep quality list.
  *
  * @author: zac
  * @date: 2019-08-02
@@ -117,11 +117,11 @@ class SleepNightDiffCallback : DiffUtil.ItemCallback<DataItem>() {
   override fun areContentsTheSame(
     oldItem: DataItem,
     newItem: DataItem
-  ) = oldItem.equals(newItem)
+  ) = oldItem == newItem
 }
 
-class SleepNightListener(val clickListener: (sleepId: Long) -> Unit) {
-  fun onClick(night: SleepNight) = clickListener(night.nightId)
+class SleepNightListener(val onClickListener: (sleepId: Long) -> Unit) {
+  fun onClick(night: SleepNight) = onClickListener(night.nightId)
 }
 
 sealed class DataItem {

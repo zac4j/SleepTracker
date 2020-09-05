@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
   <data>
+
     <variable
-        name="sleep"
-        type="com.zac4j.sleeptracker.database.SleepNight"
-        />
+      name="sleep"
+      type="com.zac4j.sleeptracker.database.SleepNight" />
+
     <variable
-        name="clickListener"
-        type="com.zac4j.sleeptracker.tracker.SleepNightListener"
-        />
+      name="clickListener"
+      type="com.zac4j.sleeptracker.tracker.SleepNightListener" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:onClick="@{() -> clickListener.onClick(sleep)}"
-      >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="@{() -> clickListener.onClick(sleep)}">
 
     <ImageView
-        android:id="@+id/quality_image"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@id/quality_string"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:sleepImage="@{sleep}"
-        tools:ignore="ContentDescription"
-        tools:srcCompat="@drawable/ic_sleep_5"
-        />
+      android:id="@+id/quality_image"
+      android:layout_width="@dimen/icon_size"
+      android:layout_height="60dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      app:layout_constraintBottom_toTopOf="@id/quality_string"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:sleepImage="@{sleep}"
+      tools:ignore="ContentDescription"
+      tools:srcCompat="@drawable/ic_sleep_5" />
+
     <TextView
-        android:id="@+id/quality_string"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/quality_image"
-        app:layout_constraintStart_toStartOf="@id/quality_image"
-        app:layout_constraintTop_toBottomOf="@id/quality_image"
-        app:sleepQualityString="@{sleep}"
-        tools:text="!Excellent"
-        />
+      android:id="@+id/quality_string"
+      android:layout_width="0dp"
+      android:layout_height="20dp"
+      android:layout_marginTop="8dp"
+      android:textAlignment="center"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/quality_image"
+      app:layout_constraintStart_toStartOf="@id/quality_image"
+      app:layout_constraintTop_toBottomOf="@id/quality_image"
+      app:sleepQualityString="@{sleep}"
+      tools:text="!Excellent" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
